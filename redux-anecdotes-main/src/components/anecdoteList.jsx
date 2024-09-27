@@ -14,10 +14,10 @@ const AnecdoteList = () => {
   })
   
   const addVote = (id) => {
-    const anecdote = anecdotes.find(anecdote => anecdote.id === id) // Find the anecdote to get the content
+    const anecdote = anecdotes.find(anecdote => anecdote.id === id) 
     dispatch(vote(id))
     if (anecdote) {
-      dispatch(setNotificationTime(`You voted for "${anecdote.content}"`, 5)) // Set the notification with content
+      dispatch(setNotificationTime(`You voted for "${anecdote.content}"`, 5)) 
     }
   }
 
