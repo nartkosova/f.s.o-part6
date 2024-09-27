@@ -1,20 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
+import { setNotificationTime } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   const anecdotes = useSelector(({ anecdotes, filter }) => {
-    return anecdotes
+    return [...anecdotes]
       .filter(anecdote =>
         anecdote.content.toLowerCase().includes(filter.toLowerCase())
       )
-      .slice()
       .sort((a, b) => b.votes - a.votes)
   })
-
+  
   const addVote = (id) => {
+    const anecdote = anecdotes.find(anecdote => anecdote.id === id) // Find the anecdote to get the content
     dispatch(vote(id))
+    if (anecdote) {
+      dispatch(setNotificationTime(`You voted for "${anecdote.content}"`, 5)) // Set the notification with content
+    }
   }
 
   return (
