@@ -7,18 +7,16 @@ const AnecdoteList = () => {
 
   const anecdotes = useSelector(({ anecdotes, filter }) => {
     return [...anecdotes]
-      .filter(anecdote =>
-        anecdote.content.toLowerCase().includes(filter.toLowerCase())
+      .filter(anecdote => 
+        typeof anecdote.content === 'string' && anecdote.content.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => b.votes - a.votes)
   })
   
-  const addVote = (id) => {
-    const anecdote = anecdotes.find(anecdote => anecdote.id === id) 
-    dispatch(vote(id))
-    if (anecdote) {
-      dispatch(setNotificationTime(`You voted for "${anecdote.content}"`, 5)) 
-    }
+  
+  const addVote = (anecdote) => { 
+    dispatch(vote(anecdote))
+    dispatch(setNotificationTime(`You voted for "${anecdote.content}"`, 5)) 
   }
 
   return (
@@ -28,7 +26,7 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => addVote(anecdote.id)}>vote</button>
+            <button onClick={() => addVote(anecdote)}>vote</button>
           </div>
         </div>
       ))}
